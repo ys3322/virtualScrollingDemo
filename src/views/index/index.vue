@@ -5,11 +5,11 @@
     </div>
 
     <div>
-      <router-link to="/virtualScroll">virtualScroll</router-link>
+      <router-link to="/virtualScroll">virtualScroll [item项高度固定的情况] </router-link>
     </div>
 
     <div>
-      <router-link to="/test">test</router-link>
+      <!-- <router-link to="/demo">demo</router-link> -->
     </div>
   </div>
 </template>

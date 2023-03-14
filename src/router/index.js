@@ -10,9 +10,9 @@ const routes = [
     component: () => import("../views/index/index.vue"),
   },
   {
-    path: "/test",
-    name: "test",
-    component: () => import("../views/test/index.vue"),
+    path: "/demo",
+    name: "demo",
+    component: () => import("../views/demo/index.vue"),
   },
   {
     path: "/virtualScroll",
