@@ -141,6 +141,7 @@ export default {
         // console.log("yangs=> ", child,height);
       });
     },
+    
     // 处理滚动
     handleScroll(event) {
       // 1. 获取相关参数
