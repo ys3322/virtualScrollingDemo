@@ -3,13 +3,11 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-import runningCondition from "./modules/runningCondition/index";
-
 export default new Vuex.Store({
-  modules: {
-    condition: runningCondition,
+  modules: {},
+  state: {
+    count: 1,
   },
-  state: {},
   mutations: {},
   actions: {},
 });

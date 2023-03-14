@@ -3,6 +3,7 @@
     <!-- 虚拟滚动样式问题 -->
     <div class="vir-scroll">
       <div class="scroll-Y" @scroll="scroll">
+        <!-- 滚动的内容 -->
         <div class="parentDom">
           <div :style="{ height: screenHeight + 'px' }"></div>
           <div class="positionRelative" :style="{ transform: getTransform }">
@@ -65,13 +66,15 @@
     </div>
   </div>
 </template>
+
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { getData } from "../../api";
 
 export default {
   name: "VirtualScroll",
   data() {
     return {
+      list: [],
       flag: false,
       /** 单行高度 */
       itemHeight: 143,
@@ -88,11 +91,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("condition/device", ["sbyxList"]),
-
     /** 根据每条数据的高度获取总列表高度 */
     screenHeight() {
-      return this.sbyxList.length * this.itemHeight;
+      return this.list.length * this.itemHeight;
     },
     /** 前面预留 */
     prevCount() {
@@ -108,32 +109,34 @@ export default {
     },
     /** 虚拟数据 */
     visibleData() {
-      return this.sbyxList.slice(
-        this.start,
-        Math.min(this.end, this.sbyxList.length)
-      );
+      return this.list.slice(this.start, Math.min(this.end, this.list.length));
     },
   },
   watch: {},
   created() {
-    this.getLatestData();
+    this.getList();
   },
   methods: {
-    ...mapActions("condition/device", ["getSbyxList"]),
-
-    getLatestData() {
-      if (this.flag === false) {
-        this.flag = true;
-        this.getSbyxList();
-        setTimeout(() => {
-          this.flag = false;
-        }, 300);
+    async getList() {
+      const [err, data] = await getData();
+      if (err) {
+        console.error("getList: err", err);
+        return;
       }
+      const list = data.data;
+      list.forEach((item, index) => {
+        // 不满2位前面补0
+        item.index = (index + 1).toString().padStart(2, "0");
+      });
+      console.log('yangs=> list',list);
+      this.list = list;
     },
+
     /** 列表滚动，暂时不节流，因为滚动快触发次数就少，容易导致没有及时更新数组导致白屏 */
     scroll(e) {
       this.scrollThrottle(e.target.scrollTop);
     },
+
     /** 滚动函数 */
     scrollThrottle(scrollTop) {
       scrollTop -= 230;
